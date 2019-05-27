@@ -22,13 +22,13 @@
         <div class="row">
             <div class="col-md-8 mb-3">
                 {{ ad.content |raw }}
-                
+
                 <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                     <ol class="carousel-indicators">
                         {% for image in ad.images %}
-                        <li data-target="#carouselExampleIndicators" data-slide-to="{{ loop.index0}}"
-                            {% if loop.first %}class="active"{% endif %}></li>
-                        {% endfor %}
+                            <li data-target="#carouselExampleIndicators" data-slide-to="{{ loop.index0}}"
+                                {% if loop.first %}class="active"{% endif %}></li>
+                            {% endfor %}
                     </ol>
                     <div class="carousel-inner">
                         {% for image in ad.images %}
@@ -52,24 +52,25 @@
                 </div>
             </div>
             <div class="col">
-
+                {% set a=ad.author %}
                 <div class="row">
-                    <div class="col-4">
-                        <img src="http://placehold.it/64x64" alt="Avatar de Joseph Dupont">
+                    <div class="col-3">
+                        <a href="{{ path('user_show',{'slug': a.slug}) }}">
+                            <img src="{{ a.picture }}" class="avatar avatar-medium" alt="Avatar de {{ a.fullName }}">
+                        </a>
                     </div>
                     <div class="col">
-                        <h3>Joseph Dupont</h3>
-                        <span class="badge badge-primary">3 annonces</span>
+                        <a href="{{ path('user_show',{'slug': a.slug}) }}">
+                           <h3>{{ a.fullName }}</h3>
+                        </a>
+                        <span class="badge badge-primary">{{a.ads | length}} annonces</span>
 
                     </div>
                 </div>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis, voluptates, aperiam soluta eos vitae laboriosam repudiandae esse eaque facere vero!</p>
-                <p>Commodi, illum unde velit est dolores voluptatibus dolorem? Aut, earum dolores dicta cum laborum architecto inventore consequatur eum placeat exercitationem!</p>
-                <p>Doloremque, ipsa, ipsam, dignissimos dolorem vel perspiciatis distinctio vitae fugiat nostrum odio enim nesciunt unde nam officia odit ex optio?</p>
+                {{ a.description | raw }}
             </div>
 
         </div>
     </div>
-
 
 {% endblock %}
