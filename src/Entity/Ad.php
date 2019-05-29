@@ -2,10 +2,10 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
 use Cocur\Slugify\Slugify;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -25,8 +25,7 @@ class Ad
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min=10, max=255, minMessage="Le titre doit faire plus de 10 caractères",
-     maxMessage="Le titre ne peut dépasser 255 caractères")
+     * @Assert\Length(min=10, max=255, minMessage="Le titre doit faire plus de 10 caractères",maxMessage="Le titre ne peut dépasser 255 caractères")
      */
     private $title;
 
@@ -76,9 +75,15 @@ class Ad
      */
     private $author;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Booking", mappedBy="ad")
+     */
+    private $bookings;
+
     public function __construct()
     {
         $this->images = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
     }
     
     /**
@@ -93,6 +98,32 @@ class Ad
             $this->slug = $slugify->slugify($this->title);
         }
     }
+
+    /**
+     * cette fonction permet d'obtenir un tableau des dates qui ne sont pas disponibles pour ce bien
+     * @return array un tableau d'objets DateTime représentant les jours d'occupation
+     */
+    public function getNotAvailableDays(){
+        $notAvailableDays=[];
+
+        foreach($this->bookings as $booking){
+            // calculer les jours qui se trouvent entre la date d'arrivée et de départ
+
+            $resultat=range($booking->getStartDate()->getTimestamp(),
+                            $booking->getEndDate()->getTimestamp(),
+                            24*60*60);
+
+        $days=array_map(function($dayTimestamp){
+            return new \DateTime(date('Y-m-d', $dayTimestamp));
+            }, $resultat);
+            
+            $notAvailableDays = array_merge($notAvailableDays,$days);
+        }
+
+        return $notAvailableDays;
+
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -221,6 +252,37 @@ class Ad
     public function setAuthor(?User $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Booking[]
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): self
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings[] = $booking;
+            $booking->setAd($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->contains($booking)) {
+            $this->bookings->removeElement($booking);
+            // set the owning side to null (unless already changed)
+            if ($booking->getAd() === $this) {
+                $booking->setAd(null);
+            }
+        }
 
         return $this;
     }

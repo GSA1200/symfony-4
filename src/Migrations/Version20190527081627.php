@@ -36,6 +36,6 @@ final class Version20190527081627 extends AbstractMigration
         $this->addSql('ALTER TABLE role_user DROP FOREIGN KEY FK_332CA4DDD60322AC');
         $this->addSql('DROP TABLE role');
         $this->addSql('DROP TABLE role_user');
-        $this->addSql('ALTER TABLE user CHANGE description description LONGTEXT NOT NULL COLLATE utf8mb4_unicode_ci');
     }
+
 }
