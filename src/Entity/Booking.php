@@ -34,14 +34,14 @@ class Booking
     /**
      * @ORM\Column(type="datetime")
      * @Assert\Date(message="Attention, la date d'arrivée doit être au bon format !")
-     * @Assert\GreaterThan("today", message="La date d'arrivée doit être supérieure à celle d'aujourd'hui !")
+     * @Assert\GreaterThan("today", message="La date d'arrivée doit être supérieure à celle d'aujourd'hui !", groups={"front"})
      */
     private $startDate;
 
     /**
      * @ORM\Column(type="datetime")
      * @Assert\Date(message="Attention, la date de départ doit être au bon format !")
-     * @Assert\GreaterThan(propertyPath="startDate", message="La date de départ doit être supérieure à la date d'arrivée !")
+     * @Assert\GreaterThan(propertyPath="startDate",message="La date de départ doit être supérieure à la date d'arrivée !")
      */
     private $endDate;
 
@@ -60,9 +60,10 @@ class Booking
      */
     private $comment;
     /**
-     * Callback applé à chaque réservation
+     * Callback appelé à chaque réservation
      * 
-     * @ORM\Prepersist
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
      */
     public function prePersist(){
         if(empty($this->createdAt)) {

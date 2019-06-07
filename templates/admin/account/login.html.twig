@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SymBNB-
+            {% block title %}Connexion à l'administration
+            {% endblock %}
+        </title>
+        <meta content="width=device-width, user-scalable=no" name="viewport">
+        <link href="/css/bootstrap.min.css" rel="stylesheet">
+        <link crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" rel="stylesheet"> {% block stylesheets %}{% endblock %}
+        <style>
+            body{
+                display: flex;
+                justify-content: center;
+                height: 100vh;
+            }
+            .card{
+                margin-top: 10%;
+            }
+        </style>
+        </head>
+        <body>
+            <div class="col-md-4">
+                <div class="card bg-light">
+                    <div class="card-header">
+                        <h4 class="card-title">
+                            <i class="fas fa-lock"></i>
+                            Connexion à l'administration
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                    {% if hasError %}
+                        <div class="alert alert-warning">
+                        <p>Les informations fournies ne sont pas correctes !</p>
+                        </div>
+                    {% endif %}
+                    
+                        <form method="post">
+                            <div class="form-group">
+                                <label for="_username">Email</label><input class="form-control" name="_username" placeholder="Adresse email..." type="text" value="{{ username }}"></div>
+                            <div class="form-group">
+                                <label for="_password"></label><input class="form-control" name="_password" placeholder="Mot de passe..." type="password"></div>
+                            <div class="form-group">
+                                <button class="btn btn-primary" type="submit">
+                                    <i class="fas fa-lock-open"></i>
+                                    Connexion !
+                                </button>
+                                <a href="{{ path('homepage') }}" class="btn btn-link">
+                                    <i class="fas fa-arrow-circle-left"></i>
+                                    Retour au site
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </body>
+    </html>
