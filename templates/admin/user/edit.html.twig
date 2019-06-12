@@ -1,0 +1,39 @@
+{% extends 'admin/base.html.twig' %}
+{% block title %}Modification des données de l'utilisateur n°
+    {{ user.id }}
+{% endblock %}
+
+{% form_theme form _self %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="my-5">Modification des données de l'utilisateur n°
+            {{ user.id }}</h1>
+        <div class="alert alert-info">
+            <p>
+                <strong>Prénom :</strong>
+                {{ user.firstName}}</p>
+            <p>
+                <strong>Nom :</strong>
+                {{ user.fullName }}</p>
+            <p>
+                <strong>Email :</strong>
+                {{ user.Email }}</p>
+        </div>
+        <div class="card-body">
+            {% block _account_introduction %}
+                <p>Contenu de l'introduction</p>
+                {{ form_widget(form.introduction) }}
+
+        {% endblock %}
+        {% block _account_description %}
+            <p>Contenu de la description</p>
+            {{ form_widget(form.description) }}
+            </div>
+    {% endblock %}
+    <button class="btn btn-primary mt-3" type="submit">
+        <i class="fas fa-check">Enregistrer les modifications</i>
+    </button>
+</div>
+</div>
+{% endblock %}
