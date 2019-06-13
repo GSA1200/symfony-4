@@ -1,6 +1,5 @@
 {% block _annonce_images_widget %}
     <p>Ici, vous pouvez ajouter vos propres images</p>
-    
     {{ form_widget(form) }}
     <input type="hidden" id="widgets-counter" value="0">
     <div class="form-group">
@@ -28,11 +27,12 @@
                     {{ form_widget(form.caption) }}
                     {{ form_errors(form.caption) }}
                 </div>
-            </div>
+
                 <div class="col-2">
                     <button type="button" data-action="delete" data-target="#block_{{ id }}"
                             class="btn btn-danger">X</button>
                 </div>
+            </div>                
         </div>
     </div>
 {% endblock %}
